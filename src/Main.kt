@@ -5,12 +5,16 @@ import util.MENU_ORDERS
 import util.MENU_SALES
 
 fun main(array: Array<String>) {
-
+    var runMainProgram = true
+    var excecuterunsubmainmenu = true
     // Presenters
+    var selectedProductOption = 0
+
+
     val menuPresenter = MenuPresenter()
 
     var mainManuOption = 0
-    var runMainProgram = true
+    var answer = 0
 
     while (runMainProgram) {
 
@@ -19,7 +23,18 @@ fun main(array: Array<String>) {
 
         when (mainManuOption) {
             MENU_SALES -> {
-
+                while (excecuterunsubmainmenu) {
+                    println("**Elija su producto u Articulo")
+                    menuPresenter.showMainMenu()
+                    selectedProductOption = readLine()!!.toInt()
+                    menuPresenter.showOptioncontinueSelecting()
+                    answer = readLine()!!.toInt()
+                    if (answer == 1) {
+                        continue
+                    } else {
+                        excecuterunsubmainmenu = false
+                    }
+                }
             }
             MENU_EMPLOYEE -> {
 
