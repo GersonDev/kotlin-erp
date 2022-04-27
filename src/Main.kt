@@ -1,3 +1,4 @@
+import domain.models.Category
 import presentation.MenuPresenter
 import util.MENU_EMPLOYEE
 import util.MENU_EXIT
@@ -24,9 +25,10 @@ fun main(array: Array<String>) {
         when (mainManuOption) {
             MENU_SALES -> {
                 while (excecuterunsubmainmenu) {
-                    println("**Elija su producto u Articulo")
+                    println("**Elija su Categoria")
                     menuPresenter.showMainMenu()
                     selectedProductOption = readLine()!!.toInt()
+                    menuPresenter.showAllProductsByCategoryId(selectedProductOption)
                     menuPresenter.showOptioncontinueSelecting()
                     answer = readLine()!!.toInt()
                     if (answer == 1) {

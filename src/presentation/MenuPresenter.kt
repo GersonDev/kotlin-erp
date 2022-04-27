@@ -16,16 +16,23 @@ class MenuPresenter {
     }
 
     fun showMainMenu() {
-        val cateries = categoriesRepository.getAllCategory()
-        cateries.forEach { category ->
-            println("${category.nombre}:")
-            val products = productsRepository.getProductsByCategoryId(category.id)
-            products.forEach {
-                println("${it.id}.${it.nombre}.${it.modelo}.${it.precio}")
-            }
+        val categories = categoriesRepository.getAllCategory()
+        categories.forEach { category ->
+            println("${category.id}.${category.nombre}:")
 
         }
     }
+
+    fun showAllProductsByCategoryId(idCategory: Int) {
+        val products = productsRepository.getProductsByCategoryId(idCategory)
+        val categoryfound = products.filter {
+            it.idCategory == idCategory
+        }
+        categoryfound.forEach {
+            println("${it.nombre}.\nmodelo o tipo:${it.modelo}.\n precio:${it.precio}")
+        }
+    }
+
 
     fun showOptioncontinueSelecting() {
         println("Desea elegir otro producto!")
