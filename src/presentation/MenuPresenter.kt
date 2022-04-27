@@ -29,7 +29,7 @@ class MenuPresenter {
             it.idCategory == idCategory
         }
         categoryfound.forEach {
-            println("${it.nombre}.\nmodelo o tipo:${it.modelo}.\n precio:${it.precio}")
+            println("${it.id}.${it.nombre}.\nmodelo o tipo:${it.modelo}.\n precio:${it.precio}")
         }
     }
 

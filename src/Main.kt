@@ -7,10 +7,10 @@ import util.MENU_SALES
 
 fun main(array: Array<String>) {
     var runMainProgram = true
-    var excecuterunsubmainmenu = true
+    var runCategorySubMenu = true
     // Presenters
-    var selectedProductOption = 0
-
+    var selectedCategoryOption = 0
+    var selectedProductOption=0
 
     val menuPresenter = MenuPresenter()
 
@@ -24,17 +24,19 @@ fun main(array: Array<String>) {
 
         when (mainManuOption) {
             MENU_SALES -> {
-                while (excecuterunsubmainmenu) {
+                while (runCategorySubMenu) {
                     println("**Elija su Categoria")
                     menuPresenter.showMainMenu()
-                    selectedProductOption = readLine()!!.toInt()
-                    menuPresenter.showAllProductsByCategoryId(selectedProductOption)
+                    selectedCategoryOption = readLine()!!.toInt()
+                    menuPresenter.showAllProductsByCategoryId(selectedCategoryOption)
+                    println("Elija su Producto")
+                    selectedProductOption= readLine()!!.toInt()
                     menuPresenter.showOptioncontinueSelecting()
                     answer = readLine()!!.toInt()
                     if (answer == 1) {
                         continue
                     } else {
-                        excecuterunsubmainmenu = false
+                        runCategorySubMenu = false
                     }
                 }
             }
