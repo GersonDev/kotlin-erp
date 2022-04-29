@@ -1,11 +1,13 @@
 package presentation
 
+import domain.repositories.CartRepository
 import domain.repositories.CategoriesRepository
 import domain.repositories.ProductsRepository
 
 class MenuPresenter {
     private val categoriesRepository: CategoriesRepository = CategoriesRepository()
     private val productsRepository: ProductsRepository = ProductsRepository()
+    private val cartRepository: CartRepository = CartRepository()
 
     fun showMainTitle() {
         println("**********************")
@@ -33,10 +35,26 @@ class MenuPresenter {
         }
     }
 
-
     fun showOptioncontinueSelecting() {
         println("Desea elegir otro producto!")
         println("1.Yes")
         println("2.No")
     }
+
+    fun addNewProduct(productId: Int) {
+        val selectedProduct = productsRepository.getProductById(productId)
+        cartRepository.addNewProduct(selectedProduct)
+    }
+
+    fun showCart() {
+        println("Los Productos del carrito son:")
+        cartRepository.getAllProducts().forEach {
+            println("$it")
+        }
+    }
+
+    fun showCartTotal(){
+        println("El total es: ${cartRepository.getCartTotal()}soles.")
+    }
 }
+
