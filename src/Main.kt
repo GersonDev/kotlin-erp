@@ -1,16 +1,14 @@
 import domain.models.Category
+import domain.repositories.CartRepository
 import presentation.MenuPresenter
-import util.MENU_EMPLOYEE
-import util.MENU_EXIT
-import util.MENU_ORDERS
-import util.MENU_SALES
+import util.*
 
 fun main(array: Array<String>) {
     var runMainProgram = true
     var runCategorySubMenu = true
     // Presenters
     var selectedCategoryOption = 0
-    var selectedProductOption=0
+    var selectedProductOption = 0
 
     val menuPresenter = MenuPresenter()
 
@@ -30,7 +28,8 @@ fun main(array: Array<String>) {
                     selectedCategoryOption = readLine()!!.toInt()
                     menuPresenter.showAllProductsByCategoryId(selectedCategoryOption)
                     println("Elija su Producto")
-                    selectedProductOption= readLine()!!.toInt()
+                    selectedProductOption = readLine()!!.toInt()
+                    menuPresenter.addNewProduct(selectedProductOption)
                     menuPresenter.showOptioncontinueSelecting()
                     answer = readLine()!!.toInt()
                     if (answer == 1) {
@@ -38,6 +37,7 @@ fun main(array: Array<String>) {
                     } else {
                         runCategorySubMenu = false
                     }
+
                 }
             }
             MENU_EMPLOYEE -> {
@@ -49,7 +49,10 @@ fun main(array: Array<String>) {
             MENU_EXIT -> {
                 runMainProgram = false
             }
-
+            MENU_VER_CARRITO -> {
+                menuPresenter.showCart()
+                menuPresenter.showCartTotal()
+            }
         }
 
     }
