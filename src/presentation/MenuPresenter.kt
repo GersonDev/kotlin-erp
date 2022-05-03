@@ -1,13 +1,15 @@
 package presentation
 
-import domain.repositories.CartRepository
-import domain.repositories.CategoriesRepository
-import domain.repositories.ProductsRepository
+import domain.models.Order
+import domain.models.OrderStatus
+import domain.repositories.*
 
 class MenuPresenter {
     private val categoriesRepository: CategoriesRepository = CategoriesRepository()
     private val productsRepository: ProductsRepository = ProductsRepository()
     private val cartRepository: CartRepository = CartRepository()
+    private val paymentsRepository: PaymentsRepository = PaymentsRepository()
+    private val ordersRepository: OrdersRepository = OrdersRepository()
 
     fun showMainTitle() {
         println("**********************")
@@ -15,6 +17,11 @@ class MenuPresenter {
         println("**********************")
 
         println("1.Ver Lista de Articulos u Productos")
+        println("2.Carrito de Compras")
+        println("3.Medio de Pagos")
+        println("4.Ver Ordenes de compras")
+        println("5.Exit")
+
     }
 
     fun showMainMenu() {
@@ -53,8 +60,37 @@ class MenuPresenter {
         }
     }
 
-    fun showCartTotal(){
+    fun showCartTotal() {
         println("El total es: ${cartRepository.getCartTotal()}soles.")
+    }
+
+    fun showPayments() {
+        paymentsRepository.getAllPayment().forEach {
+            println("${it.id}.${it.modalidad}")
+        }
+    }
+
+    fun addNewPayment(paymentId: Int) {
+        val selectedPayment = paymentsRepository.getPaymentMethodsById(paymentId)
+        cartRepository.setPayment(selectedPayment)
+        //creamos la orden luego de hacer el pago
+        val order = Order(
+            payment = cartRepository.getPayment(),
+            products = cartRepository.getAllProducts(),
+            status = OrderStatus.COMPLETED,
+            total = cartRepository.getCartTotal()
+        )
+        ordersRepository.addNewOrder(order)
+    }
+
+    fun showAllOrders() {
+        ordersRepository.getAllOrder().forEach {
+            println("Producto(s) a pagar:\n${it.products}")
+            println("El total es:\n${it.total}")
+            println("Su medio de pago seleccionado es:\n${it.payment}")
+            println("FASE ${it.status}")
+
+        }
     }
 }
 

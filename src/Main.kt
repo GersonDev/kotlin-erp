@@ -1,5 +1,6 @@
 import domain.models.Category
 import domain.repositories.CartRepository
+import domain.repositories.PaymentsRepository
 import presentation.MenuPresenter
 import util.*
 
@@ -9,6 +10,7 @@ fun main(array: Array<String>) {
     // Presenters
     var selectedCategoryOption = 0
     var selectedProductOption = 0
+    var selectedPaymentOption=0
 
     val menuPresenter = MenuPresenter()
 
@@ -37,13 +39,22 @@ fun main(array: Array<String>) {
                     } else {
                         runCategorySubMenu = false
                     }
-
                 }
             }
-            MENU_EMPLOYEE -> {
+            MENU_PAYMENTS -> {
+            println("SELECCIONE SU MEDIO DE PAGO:")
+                menuPresenter.showPayments()
+                selectedPaymentOption= readLine()!!.toInt()
+                menuPresenter.addNewPayment(selectedPaymentOption)
 
             }
+
             MENU_ORDERS -> {
+                println("****************")
+                println( "COMPRA EXITOSA:")
+                println("****************")
+
+                menuPresenter.showAllOrders()
 
             }
             MENU_EXIT -> {
