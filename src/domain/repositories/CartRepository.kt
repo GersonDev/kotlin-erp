@@ -1,17 +1,22 @@
 package domain.repositories
 
+import domain.models.Payment
 import domain.models.Product
 
 class CartRepository {
-    private val products: MutableList<Product> = mutableListOf()
-    fun addNewProduct(product: Product) {
-        products.add(product)
+    private var products: MutableList<Product> = mutableListOf()
+    private var paymentDone: Payment? = null
+
+    fun setPayment(payment: Payment) {
+        paymentDone = payment
     }
 
-    fun getCartByUuid(id: Int): Product {
-        return products.first {
-            it.id == id
-        }
+    fun getPayment(): Payment? {
+        return paymentDone
+    }
+
+    fun addNewProduct(product: Product) {
+        products.add(product)
     }
 
     fun getAllProducts(): List<Product> {
@@ -19,10 +24,15 @@ class CartRepository {
     }
 
     fun getCartTotal(): Double {
-        var sumatotal:Double=0.0
+        var sumatotal: Double = 0.0
         products.forEach {
-            sumatotal+=it.precio
+            sumatotal += it.precio
         }
         return sumatotal
+    }
+
+    fun clean() {
+        products = mutableListOf()
+        paymentDone = null
     }
 }
