@@ -6,7 +6,6 @@ import util.*
 
 fun main(array: Array<String>) {
     var runMainProgram = true
-    var runCategorySubMenu = true
     // Presenters
     var selectedCategoryOption = 0
     var selectedProductOption = 0
@@ -24,7 +23,7 @@ fun main(array: Array<String>) {
 
         when (mainManuOption) {
             MENU_SALES -> {
-                while (runCategorySubMenu) {
+                while (true) {
                     println("**Elija su Categoria")
                     menuPresenter.showMainMenu()
                     selectedCategoryOption = readLine()!!.toInt()
@@ -37,7 +36,7 @@ fun main(array: Array<String>) {
                     if (answer == 1) {
                         continue
                     } else {
-                        runCategorySubMenu = false
+                        break
                     }
                 }
             }
