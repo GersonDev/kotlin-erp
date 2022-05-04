@@ -71,9 +71,11 @@ class MenuPresenter {
     }
 
     fun addNewPayment(paymentId: Int) {
+        // 1. el usuario selecciona su medio de pago
         val selectedPayment = paymentsRepository.getPaymentMethodsById(paymentId)
         cartRepository.setPayment(selectedPayment)
-        //creamos la orden luego de hacer el pago
+
+        // 2. se crea la orden luego de hacer el pago
         val order = Order(
             payment = cartRepository.getPayment(),
             products = cartRepository.getAllProducts(),
@@ -81,6 +83,9 @@ class MenuPresenter {
             total = cartRepository.getCartTotal()
         )
         ordersRepository.addNewOrder(order)
+
+        // 3. limpiamos el carrito
+        cartRepository.clean()
     }
 
     fun showAllOrders() {
