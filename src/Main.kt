@@ -44,8 +44,9 @@ fun main(array: Array<String>) {
             println("SELECCIONE SU MEDIO DE PAGO:")
                 menuPresenter.showPayments()
                 selectedPaymentOption= readLine()!!.toInt()
-                menuPresenter.addNewPayment(selectedPaymentOption)
-
+                menuPresenter.showAmountMessage()
+                val enteredAmount = readLine()!!.toDouble()
+                menuPresenter.addNewPayment(selectedPaymentOption, enteredAmount)
             }
 
             MENU_ORDERS -> {
@@ -61,7 +62,6 @@ fun main(array: Array<String>) {
             }
             MENU_VER_CARRITO -> {
                 menuPresenter.showCart()
-                menuPresenter.showCartTotal()
             }
         }
 

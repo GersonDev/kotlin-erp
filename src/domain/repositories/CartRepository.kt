@@ -4,17 +4,28 @@ import domain.models.Payment
 import domain.models.Product
 
 class CartRepository {
-    private var products: MutableList<Product> = mutableListOf()
-    private var paymentDone: Payment? = null
+    private val products: MutableList<Product> = mutableListOf()
+    private val paymentsMade: MutableList<Payment> = mutableListOf()
 
-    fun setPayment(payment: Payment) {
-        paymentDone = payment
+    // region payments
+    fun addNewPayment(payment: Payment) {
+        paymentsMade.add(payment)
     }
 
-    fun getPayment(): Payment? {
-        return paymentDone
+    fun getAllPaymentsMade(): List<Payment> {
+        return paymentsMade
     }
 
+    fun getTotalPaymentsMade(): Double {
+        var sumaPaymentsTotal = 0.0
+        paymentsMade.forEach {
+            sumaPaymentsTotal += it.amount
+        }
+        return sumaPaymentsTotal
+    }
+    // endregion
+
+    // region products
     fun addNewProduct(product: Product) {
         products.add(product)
     }
@@ -30,9 +41,19 @@ class CartRepository {
         }
         return sumatotal
     }
+    // endregion
+
+    fun getBalance(): Double {
+        val balance = getCartTotal() - getTotalPaymentsMade()
+        return balance
+    }
+
+    fun isReadyForCreatingOrder(): Boolean {
+        return getBalance() == 0.0
+    }
 
     fun clean() {
-        products = mutableListOf()
-        paymentDone = null
+        products.clear()
+        paymentsMade.clear()
     }
 }

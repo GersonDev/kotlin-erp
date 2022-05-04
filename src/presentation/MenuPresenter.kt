@@ -2,6 +2,7 @@ package presentation
 
 import domain.models.Order
 import domain.models.OrderStatus
+import domain.models.Payment
 import domain.repositories.*
 
 class MenuPresenter {
@@ -58,10 +59,13 @@ class MenuPresenter {
         cartRepository.getAllProducts().forEach {
             println("$it")
         }
-    }
+        println("Los Pagos del carrito son:")
+        cartRepository.getAllPaymentsMade().forEach {
+            println("$it")
+        }
 
-    fun showCartTotal() {
-        println("El total es: ${cartRepository.getCartTotal()}soles.")
+        println("TOTAL:  ${cartRepository.getCartTotal()}")
+        println("BALANCE:  ${cartRepository.getBalance()}")
     }
 
     fun showPayments() {
@@ -70,30 +74,38 @@ class MenuPresenter {
         }
     }
 
-    fun addNewPayment(paymentId: Int) {
+    fun showAmountMessage() {
+        println("Coloque su monto")
+    }
+
+    fun addNewPayment(paymentId: Int, amount: Double) {
         // 1. el usuario selecciona su medio de pago
-        val selectedPayment = paymentsRepository.getPaymentMethodsById(paymentId)
-        cartRepository.setPayment(selectedPayment)
+        val selectedPayment: Payment = paymentsRepository.getPaymentMethodsById(paymentId)
+        selectedPayment.amount = amount
+        cartRepository.addNewPayment(selectedPayment)
 
-        // 2. se crea la orden luego de hacer el pago
-        val order = Order(
-            payment = cartRepository.getPayment(),
-            products = cartRepository.getAllProducts(),
-            status = OrderStatus.COMPLETED,
-            total = cartRepository.getCartTotal()
-        )
-        ordersRepository.addNewOrder(order)
+        if (cartRepository.isReadyForCreatingOrder()) {
+            // 2. se crea la orden luego de hacer el pago
+            val order = Order(
+                    status = OrderStatus.COMPLETED,
+                    total = cartRepository.getCartTotal()
+            )
+            order.paymentsMade.addAll(cartRepository.getAllPaymentsMade())
+            order.products.addAll(cartRepository.getAllProducts())
+            ordersRepository.addNewOrder(order)
 
-        // 3. limpiamos el carrito
-        cartRepository.clean()
+            // 3. limpiamos el carrito
+            cartRepository.clean()
+        }
     }
 
     fun showAllOrders() {
         ordersRepository.getAllOrder().forEach {
-            println("Producto(s) a pagar:\n${it.products}")
-            println("El total es:\n${it.total}")
-            println("Su medio de pago seleccionado es:\n${it.payment}")
-            println("FASE ${it.status}")
+            println("Orden #${it.id}")
+            println("\t\tProducto(s) a pagar:\n${it.products}")
+            println("\t\tEl total es:\n${it.total}")
+            println("\t\tSu medio de pago seleccionado es:\n${it.paymentsMade}")
+            println("\t\tFASE ${it.status}")
 
         }
     }
